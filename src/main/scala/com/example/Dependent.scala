@@ -25,7 +25,7 @@ trait DependentTable extends EmployeeTable{
 }
 
 
-trait DependentComponent extends DependentTable{
+object DependentComponent extends DependentTable{
   this:DbProvider =>
   import driver.api._
 
@@ -82,8 +82,8 @@ trait DependentComponent extends DependentTable{
 }
 
 
-object DependentRepo extends DependentComponent{
-
-}
+//object DependentRepo extends DependentComponent{
+//
+//}
 
 

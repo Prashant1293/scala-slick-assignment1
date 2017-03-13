@@ -10,7 +10,7 @@ trait ProjectTable extends EmployeeTable{
   this:DbProvider =>
   import driver.api._
 
-  class ProjectTable (tag:Tag) extends Table[Project](tag,"project_table_name"){
+  class ProjectTable (tag:Tag) extends Table[Project](tag,"project"){
     val emp_id= column[Int]("emp_id",O.PrimaryKey)
     val name= column[String]("name")
     def empFK = foreignKey("Emp_Prj_FK",emp_id,queryObj)(_.id)
@@ -19,7 +19,7 @@ trait ProjectTable extends EmployeeTable{
   val queryObj1= TableQuery[ProjectTable]
 }
 
-trait ProjectComponent extends ProjectTable{
+object ProjectComponent extends ProjectTable{
   this:DbProvider =>
   import driver.api._
 
@@ -60,6 +60,6 @@ trait ProjectComponent extends ProjectTable{
 
 }
 
-object ProjectRepo extends ProjectComponent{
-
-}
+//object ProjectRepo extends ProjectComponent{
+//
+//}

@@ -9,7 +9,7 @@ trait EmployeeTable extends MySqlDBProvider{
   import driver.api._
 
 
-  class EmployeeTable (tag:Tag) extends Table[Employee](tag,"experience_table_name"){
+  class EmployeeTable (tag:Tag) extends Table[Employee](tag,"employee"){
     val id= column[Int]("id",O.PrimaryKey)
     val name= column[String]("name")
     val experience= column[Double]("experience")
@@ -19,7 +19,7 @@ trait EmployeeTable extends MySqlDBProvider{
 }
 
 
-trait EmployeeComponent extends EmployeeTable{
+object EmployeeComponent extends EmployeeTable{
     this:DbProvider => import driver.api._
 
 
@@ -64,9 +64,9 @@ trait EmployeeComponent extends EmployeeTable{
 
 }
 
-object EmployeeRepo extends EmployeeComponent{
-
-}
+//object EmployeeRepo extends EmployeeComponent{
+//
+//}
 
 
 
