@@ -1,9 +1,10 @@
 package com.example
 
-import slick.driver.MySQLDriver
+import slick.jdbc.MySQLProfile
+
 
 trait MySqlDBProvider extends DbProvider{
-  val driver = MySQLDriver
+  val driver = MySQLProfile
 
   import driver.api._
 

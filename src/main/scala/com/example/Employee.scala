@@ -4,7 +4,7 @@ import slick.jdbc.PostgresProfile.api._
 
 case class Employee (id:Int, name:String,experience :Double)
 
-trait EmployeeTable extends MySqlDBProvider{
+trait EmployeeTable extends H2DBComponent{
   this:DbProvider =>
   import driver.api._
 
@@ -19,8 +19,9 @@ trait EmployeeTable extends MySqlDBProvider{
 }
 
 
-object EmployeeComponent extends EmployeeTable{
-    this:DbProvider => import driver.api._
+trait EmployeeComponent extends EmployeeTable{
+    this:DbProvider =>
+  import driver.api._
 
 
   //val db =Database.forConfig("myPostgresDB")
@@ -64,9 +65,9 @@ object EmployeeComponent extends EmployeeTable{
 
 }
 
-//object EmployeeRepo extends EmployeeComponent{
-//
-//}
+object EmployeeComponent extends EmployeeComponent{
+  }
+
 
 
 

@@ -1,6 +1,6 @@
 package com.example
 
-import slick.driver.JdbcProfile
+import slick.jdbc.JdbcProfile
 
 trait DbProvider {
 

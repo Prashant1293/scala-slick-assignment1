@@ -25,7 +25,7 @@ trait DependentTable extends EmployeeTable{
 }
 
 
-object DependentComponent extends DependentTable{
+trait DependentComponent extends DependentTable{
   this:DbProvider =>
   import driver.api._
 
@@ -39,9 +39,8 @@ object DependentComponent extends DependentTable{
     db.run(action)
   }
 
-  def delete(dependent: Dependent) = {
-    val query = queryObj2.filter(x => x.emp_id === dependent.emp_id && x.name ===dependent.name &&
-                x.relation === dependent.relation)
+  def delete(dependent: Int) = {
+    val query = queryObj2.filter(x => x.emp_id === dependent)
     val action = query.delete
     db.run(action)
   }
@@ -52,9 +51,8 @@ object DependentComponent extends DependentTable{
     db.run(query)
   }
 
-  def updateName(dependent: Dependent, name: String) = {
-    val query = queryObj2.filter(x =>  x.emp_id === dependent.emp_id && x.name ===dependent.name &&
-                 x.relation === dependent.relation).map(_.name).update(name)
+  def updateName(dependent:Int, name: String) = {
+    val query = queryObj2.filter(x =>  x.emp_id === dependent).map(_.name).update(name)
     db.run(query)
   }
 
@@ -78,9 +76,45 @@ object DependentComponent extends DependentTable{
     val query = queryObj2.to[List].result
     db.run(query)
   }
+  def truncate={
+
+    val action = queryObj2.delete
+    db.run(action)
+  }
+  def crossJoin: Future[List[(String, String)]] = {
+    val query = for {
+      (e, d) <- queryObj join queryObj2
+    } yield (e.name, d.name)
+    db.run(query.to[List].result)
+  }
+
+  def innerJoin: Future[List[(String, String)]] = {
+    val query = for {
+      (e, d) <- queryObj join queryObj2 on(_.id === _.emp_id)
+    } yield (e.name, d.name)
+    db.run(query.to[List].result)
+  }
+
+  def leftOuterJoin: Future[List[(String, Option[Option[Int]])]] = {
+    val query = for {
+      (e, d) <- queryObj joinLeft queryObj2 on(_.id === _.emp_id)
+    } yield (e.name, d.map(_.age))
+    db.run(query.to[List].result)
+  }
+
+  def fullJoin = {
+    val query = for {
+      (e, d) <- queryObj joinFull queryObj2 on (_.id === _.emp_id)
+    } yield (e.flatMap(_.name), d.map(_.age))
+    db.run(query.to[List].result)
+  }
 
 }
 
+
+object DependentComponent extends DependentComponent
+
+//with MySqlDBProvider
 
 //object DependentRepo extends DependentComponent{
 //
